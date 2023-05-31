@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Doctor Bios
+{% endblock %}
+
+{% block nav %}
+  <body onload="activeNav('nav-access')">
+{% endblock %}
+
+{% block main %}
+  <main class="access-main">
+    <article class="section" style="grid-area: title;">
+      <h1>Access</h1>
+    </article>
+    <article class="section" style="grid-area: map;">
+      <img src="../static/map.png" class="pic">
+    </article>
+    <article class="section" style="grid-area: address;">
+      <h3>Address:<br><br></h3>
+      <h4>3494 Animal Ct<br>Somewhere, Some Place 1234-567</h4>
+      <h5><br>Parking available</h5>
+    </article>
+    <article class="section" style="grid-area: subway;">
+      <h3>Subway:<br><br></h3>
+      <h4>
+        Take the Imatrain Line to Goulburn Station and
+        follow Sloane St. until you see Animal Ct.
+      </h4>
+      <h5><br>8 minute walk</h5>
+    </article>
+  </main>
+{% endblock %}

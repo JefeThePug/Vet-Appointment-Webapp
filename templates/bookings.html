@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Appointments
+{% endblock %}
+
+{% block nav %}
+  <body>
+{% endblock %}
+
+{% block main %}
+  <main class="appt-main">
+    <article class="section" style="grid-area: title;">
+      <h1>Appointments:</h1>
+    </article>
+    <article class="section" style="grid-area: upcoming;">
+      <h3>Upcoming Appointments</h3>
+      <br>
+      <form action="/appointments" method="post">
+        <table class="appt-table" cellspacing="0" cellpadding="0">
+          {% for appt in u_appt %}
+          <tr class="appt-row">
+            {% for item in appt %}
+            <td class="appt">{{item}}</td>
+            {% endfor %}
+            <td class="appt">
+              <button class="del-btn" name="delete" value="{{appt[0]+'-'+appt[2]+'-'+appt[4]+'-'+appt[6]}}" type="submit">
+              <span class="material-icons" style="color: red" alt="remove">remove_circle_outline</span>
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </form>
+    </article>
+    <article class="section" style="grid-area: past;">
+      <h3>Past Appointments</h3>
+      <br>
+      <table class="appt-table">
+        {% for appt in p_appt %}
+        <tr>
+          {% for item in appt %}
+          <td class="appt">{{item}}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </table>
+    </article>
+  </main>
+{% endblock %}

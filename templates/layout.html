@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <meta name="description" content="The description">
+    <link rel="stylesheet" href="../static/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="../static/iconlight.ico" rel="icon" media="(prefers-color-scheme: light)">
+    <link href="../static/icondark.ico" rel="icon" media="(prefers-color-scheme: dark)">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <title>Dr. Pug: {% block title %}{% endblock %}</title>
+  </head>
+  {% block nav %}{% endblock %}
+    <header class="header">
+        <nav>
+          <a href="/book"><img class="logo" src="../static/pug.png" alt="Dr. Pug logo"></a>
+          {% if session["user_id"] %}
+          <div class="container">
+              <div class="menu">
+                <a href="/doctors" class="nav-link" id="nav-doctors">Doctors</a>
+                <a href="/hours" class="nav-link" id="nav-hours">Hours</a>
+                <a href="/book" class="nav-link" id="nav-book">Book&nbsp;Appointment</a>
+                <a href="/access" class="nav-link" id="nav-access">Access</a>
+              </div>
+              <div>
+                <button class="hamburger">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </button>
+              </div>
+              <div class="acct">
+                <button class="acct-btn">
+                  <span class="nav-link">
+                    <span class="material-icons">pets</span>&nbsp;Account
+                  </span>
+                </button>
+              </div>
+          </div>
+          {% else %}
+          <div class="container">
+            <div class="menu"></div>
+            <div class="login">
+              <button class="login-btn">
+                <span class="nav-link">
+                  <span class="material-icons">pets</span>&nbsp;Account
+                </span>
+              </button>
+            </div>
+          </div>
+          {% endif %}
+        </nav>
+        <div class="mobile-menu">
+          <a href="/doctors">Doctors</a>
+          <a href="/hours">Hours</a>
+          <a href="/book">Book&nbsp;Appointment</a>
+          <a href="/access">Access</a>
+        </div>
+        <div class="account-menu">
+          <a href="/appointments">My Appointments</a>
+          <span><br></span>
+          <a href="/settings">Settings</a>
+          <a href="/logout">Log-Out</a>
+        </div>
+        <div class="login-menu">
+          <a href="/login">Log-In</a>
+          <a href="/register">Sign-Up</a>
+        </div>
+        {% if get_flashed_messages() %}
+        <div class="alert" role="alert">
+          <div>{{ get_flashed_messages() | join(" ") }}</div>
+        </div>
+        {% else %}
+        <div class="no-alert">
+          <p>&nbsp;</p>
+        </div>
+        {% endif %}
+    </header>
+    {% block main %}{% endblock %}
+    <script src="../static/main.js"></script>
+  </body>
+</html>

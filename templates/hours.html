@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Clinic Hours
+{% endblock %}
+
+{% block nav %}
+  <body onload="activeNav('nav-hours')">
+{% endblock %}
+
+{% block main %}
+  <main  class="hours-main">
+    <article class="section" style="grid-area: title;">
+      <h1>Clinic Hours</h1>
+    </article>
+    <article class="section" style="grid-area: pic1;">
+      <img src="../static/clinic.jpg" class="pic">
+    </article>
+    <article class="section" style="grid-area: hours;">
+      <h3> Open Hours:</h3>
+      <br>
+      <div class="bg-container">
+        <div class="bg">
+          <table class="hours-table">
+            <tr>
+              <th><span class="material-icons">pets</span></th>
+              <th class="table-head-a">Sun</th>
+              <th class="table-head-b">Mon</th>
+              <th class="table-head-a">Tue</th>
+              <th class="table-head-b">Wed</th>
+              <th class="table-head-a">Thu</th>
+              <th class="table-head-b">Fri</th>
+              <th class="table-head-a">Sat</th>
+            </tr>
+            <tr>
+              <td class="table-head-a">9:00<br>12:00</td>
+              <td class="off"></td>
+              <!--Sunday AM-->
+              <td class="on"></td>
+              <!--Monday AM-->
+              <td class="off"></td>
+              <!--Tuesday AM-->
+              <td class="on"></td>
+              <!--Wednesday AM-->
+              <td class="on"></td>
+              <!--Thursday AM-->
+              <td class="on"></td>
+              <!--Friday AM-->
+              <td class="on"></td>
+              <!--Saturday AM-->
+            </tr>
+            <tr>
+              <td class="table-head-b">14:00<br>18:00</td>
+              <td class="on"></td>
+              <!--Sunday PM-->
+              <td class="on"></td>
+              <!--Monday PM-->
+              <td class="off"></td>
+              <!--Tuesday PM-->
+              <td class="off"></td>
+              <!--Wednesday PM-->
+              <td class="on"></td>
+              <!--Thursday PM-->
+              <td class="on"></td>
+              <!--Friday PM-->
+              <td class="on"></td>
+              <!--Saturday PM-->
+            </tr>
+          </table>
+        </div>
+      </div>
+    </article>
+    <article class="section" style="grid-area: pic2;">
+      <img src="../static/waitingroom.jpg" class="pic">
+    </article>
+    <article class="section hours-msg" style="grid-area: message;">
+      <h4 class="bg pad">Key:</h4>
+      <table class="bg pad">
+        <tr>
+          <td class="on key">&nbsp;</td>
+          <td class="key">
+            <h5>Open</h5>
+          </td>
+          <td class="off key">&nbsp;</td>
+          <td class="key">
+            <h5>Closed</h5>
+          </td>
+        </tr>
+      </table>
+    </article>
+    <article class="section" style="grid-area: pic3;">
+      <img src="../static/doctorroom.jpg" class="pic">
+    </article>
+  </main>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Account Settings
+{% endblock %}
+
+{% block nav %}
+  <body>
+{% endblock %}
+
+{% block main %}
+  <main class="settings-main">
+    <article class="section" style="grid-area: title;">
+      <h1>Settings</h1>
+    </article>
+    <article class="section" style="grid-area: name;">
+      <br>
+      <h3>User Name: <span class="field">{{name}}</span></h3>
+      <br>
+      <h3>Email: <span class="field">{{email}}</span></h3>
+    </article>
+    <article class="section" style="grid-area: pets;">
+      <h3>Pets on file:</h3>
+      <br>
+      <ul>
+        {% for pet in petnames %}
+        <li>
+          <table class="del-table">
+            <tr>
+              <td>
+                <h5>{{pet}}</h5>
+              </td>
+              <td>
+                <form action="/settings" method="post">
+                  <button class="del-btn" name="delete" value="{{pet}}" type="submit">
+                  <span class="material-icons" style="color: red" alt="remove">remove_circle_outline</span>
+                  </button>
+                </form>
+              </td>
+            </tr>
+          </table>
+        </li>
+        {% endfor %}
+      </ul>
+    </article>
+    <article class="section" style="grid-area: namebtn;">
+      <form action="/settings" method="post">
+        <button class="submit-button-sm" name="clicked" value="User Name" type="submit">
+        Change User Name
+        </button>
+      </form>
+    </article>
+    <article class="section" style="grid-area: emailbtn;">
+      <form action="/settings" method="post">
+        <button class="submit-button-sm" name="clicked" value="Email" type="submit">
+        Change Email
+        </button>
+      </form>
+    </article>
+    <article class="section" style="grid-area: passbtn;">
+      <form action="/settings" method="post">
+        <button class="submit-button-sm" name="clicked" value="Password" type="submit">
+        Change Password
+        </button>
+      </form>
+    </article>
+    <article class="section" style="grid-area: petbtn;">
+      <form action="/settings" method="post">
+        <button class="submit-button-sm" name="clicked" value="Pets" type="submit">
+        Add a Pet
+        </button>
+      </form>
+    </article>
+  </main>
+{% endblock %}

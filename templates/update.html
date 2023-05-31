@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Update {{content}}
+{% endblock %}
+
+{% block nav %}
+  <body>
+{% endblock %}
+
+{% block main %}
+  <main  class="login-main">
+    <article class="section" style="grid-area: title;">
+      <h1>Update {{content}}</h1>
+    </article>
+    <article class="section" style="grid-area: loginform;">
+      <br>
+      <form action="/update" method="post">
+        {% if content == "Password" %}
+        <input autocomplete="off" autofocus name="old-x" placeholder="Old {{content}}" type="text">
+        {% else %}
+        <input name="old-x" value="{{current}}" type="hidden">
+        <h3>{{content}}: <span class="field">{{current}}</span></h3>
+        {% endif %}<br>
+        <input name="content" value="{{content}}" type="hidden">
+        <input autocomplete="off" autofocus name="new-x" placeholder="New {{content}}" type="text">
+        <input autocomplete="off" autofocus name="conf-x" placeholder="Confirm New {{content}}" type="text">
+        <button class="submit-button" type="submit">Update</button>
+      </form>
+    </article>
+  </main>
+  {% endblock %}

@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Book Appointment
+{% endblock %}
+
+{% block nav %}
+  <body onload="activeNav('nav-book')">
+{% endblock %}
+
+{% block main %}
+  <main class="book-main">
+    <article class="section" style="grid-area: title;">
+      <h1>Book Appointment</h1>
+    </article>
+    <article class="section" style="grid-area: form;">
+      <article class="book-form">
+        <form action="/book" method="post">
+          <article class="section" style="grid-area: doctor;">
+            <div class="center">
+              <select name="doctor" id="doctor" onchange="submitChange()">
+                {% if select == "None" %}
+                <option value="" selected disabled>Select Doctor &#9662;</option>
+                {% else %}
+                <option value="" disabled>Select Doctor &#9662;</option>
+                {% endif %}
+                {% for doctor in doctors %}
+                {% if select == doctor %}
+                <option value="{{doctor}}" selected>{{doctor}}</option>
+                {% else %}
+                <option value="{{doctor}}">{{doctor}}</option>
+                {% endif %}
+                {% endfor %}
+                {% if select == "No Preference" %}
+                <option value="No Preference" selected>No Preference</option>
+                {% else %}
+                <option value="No Preference">No Preference</option>
+                {% endif %}
+              </select>
+            </div>
+          </article>
+          <article class="section" style="grid-area: pet;">
+            <div class="center">
+              <select name="pet" id="pet">
+                <option value="" selected disabled>Select Pet &#9662;</option>
+                {% for pet in pets %}
+                <option value="{{pet}}">{{pet}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </article>
+          <div class="outer" style="grid-area:bookings">
+            <div class="inner">
+              <table class="booking-table">
+                <tr class="book-tr">
+                  <td class="fixed boldhead book-td">&nbsp;</td>
+                  {% for date in dates %}
+                  <td class="boldhead book-td">{{date}}</td>
+                  {% endfor %}
+                </tr>
+                {% for time in range(14) %}
+                <tr class="book-tr">
+                  <td class="fixed boldhead book-td">{{times[time]}}</td>
+                  {% for d in range(5) %}
+                  <td class="book-td">
+                    <button type="submit" class="booking-btn {{classes[5*time + d]}}" name="book-slot" value="{{dates[d]}}-{{times[time]}}">{{marks[5*time + d]}}</button>
+                  </td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </form>
+        <form id="update" method="post" action="/repopulate">
+          <input type="hidden" name="selected_option" id="selectedOption">
+        </form>
+      </article>
+    </article>
+  </main>
+{% endblock %}

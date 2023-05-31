@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Doctor Bios
+{% endblock %}
+
+{% block nav %}
+  <body onload="activeNav('nav-doctors')">
+{% endblock %}
+
+{% block main %}
+  <main  class="docs-main">
+    <article class="section" style="grid-area: title;">
+      <h1>Doctor Bios</h1>
+    </article>
+    <article class="section" style="grid-area: pic1;">
+      <img class="docpic" src="../static/doca.png">
+    </article>
+    <article class="section card" style="grid-area: doc1;">
+      <h3>Dr. Linda Puggs</h3>
+      <br>
+      <h5>A dedicated veterinarian at Dr. Pug Animal Clinic, Dr. Linda has a lifelong love for pugs.
+        Her expertise and passion for these adorable canines make her an exceptional caregiver.
+        With specialized training in small animal medicine, Dr. Puggs provides personalized care,
+        tailored treatments, and a comforting environment for every pug and pet she treats.
+        She actively supports pug rescue organizations, promotes responsible pet ownership, and
+        advocates for pug health. Dr. Linda's commitment to the well-being of pugs makes her a
+        trusted professional at the clinic and a beloved advocate for pug lovers everywhere.
+      </h5>
+    </article>
+    <article class="section" style="grid-area: pic2;">
+      <img class="docpic" src="../static/docb.png">
+    </article>
+    <article class="section card" style="grid-area: doc2;">
+      <h3>Dr. Jeffrey Doggert</h3>
+      <br>
+      <h5>A recent addition to the team at Dr. Pug Animal Clinic, Dr. Jefferey brings specialized
+        expertise in canine respiratory care and anesthesia. He works closely with Dr. Linda to
+        deliver exceptional veterinary care, focusing on advanced respiratory treatments and safe
+        anesthesia administration. With his extensive training in this specific field, Dr. Jefferey
+        enhances the clinic's ability to provide comprehensive and specialized care to pugs and other
+        beloved pets. His dedication to staying updated with the latest advancements ensures that
+        patients receive optimal care, promoting their well-being during procedures and surgeries.
+      </h5>
+    </article>
+  </main>
+{% endblock %}

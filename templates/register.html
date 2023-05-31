@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Register
+{% endblock %}
+
+{% block nav %}
+  <body>
+{% endblock %}
+
+{% block main %}
+  <main class="login-main">
+    <article class="section" style="grid-area: title;">
+      <h1>Sign Up</h1>
+    </article>
+    <article class="section" style="grid-area: loginform;">
+      <form action="/register" method="post">
+        <input autocomplete="off" autofocus name="username" placeholder="Username" type="text"><br>
+        <input name="password" placeholder="Password" type="password"><br>
+        <input name="re-password" placeholder="Confirm Password" type="password"><br><br>
+        <button class="submit-button" type="submit">Register</button>
+      </form>
+    </article>
+  </main>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Add Pet
+{% endblock %}
+
+{% block nav %}
+  <body>
+{% endblock %}
+
+{% block main %}
+  <main class="login-main">
+    <article class="section" style="grid-area: title;">
+      <h1>Update {{content}}</h1>
+    </article>
+    <article class="section" style="grid-area: loginform;">
+      <br>
+      <form action="/pet_update" method="post">
+        <h3>Pets registered:</h3>
+        {% for pet in pets %}
+        <p style="text-align: center">
+          <span class="field">{{pet}}</span>
+        </p>
+        {% endfor %}
+        <input autocomplete="off" autofocus name="new-pet" placeholder="New Pet's Name" type="text">
+        <button class="submit-button" type="submit">Add Pet</button>
+      </form>
+    </article>
+  </main>
+{% endblock %}
