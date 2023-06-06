@@ -282,6 +282,7 @@ main {
   grid-template-areas:
     'doctor'
     'pet'
+    'key'
     'bookings';
 }
 
@@ -343,10 +344,11 @@ li {
 }
 
 table {
-  table-layout: fixed;
+  table-layout: auto;
 }
 
 .hours-table {
+  table-layout: fixed;
   width: 100%;
 }
 
@@ -534,6 +536,7 @@ td {
 }
 
 .outer {
+  table-layout: auto;
   position: relative;
   margin-left: 10%;
 }
@@ -584,6 +587,16 @@ td {
 .center {
   display: flex;
   width: 100%;
+}
+
+.book-key{
+  display: inline;
+  align-items: center;
+  margin: auto;
+}
+
+.book-th{
+  padding: 0 4em;
 }
 
 select {

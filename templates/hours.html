@@ -34,37 +34,15 @@
             </tr>
             <tr>
               <td class="table-head-a">9:00<br>12:00</td>
-              <td class="off"></td>
-              <!--Sunday AM-->
-              <td class="on"></td>
-              <!--Monday AM-->
-              <td class="off"></td>
-              <!--Tuesday AM-->
-              <td class="on"></td>
-              <!--Wednesday AM-->
-              <td class="on"></td>
-              <!--Thursday AM-->
-              <td class="on"></td>
-              <!--Friday AM-->
-              <td class="on"></td>
-              <!--Saturday AM-->
+              {% for day in ams %}
+              <td class="{{day}}"></td>
+              {% endfor %}
             </tr>
             <tr>
               <td class="table-head-b">14:00<br>18:00</td>
-              <td class="on"></td>
-              <!--Sunday PM-->
-              <td class="on"></td>
-              <!--Monday PM-->
-              <td class="off"></td>
-              <!--Tuesday PM-->
-              <td class="off"></td>
-              <!--Wednesday PM-->
-              <td class="on"></td>
-              <!--Thursday PM-->
-              <td class="on"></td>
-              <!--Friday PM-->
-              <td class="on"></td>
-              <!--Saturday PM-->
+              {% for day in pms %}
+              <td class="{{day}}"></td>
+              {% endfor %}
             </tr>
           </table>
         </div>

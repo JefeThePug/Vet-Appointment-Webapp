@@ -5,6 +5,8 @@ from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 from support import login_required, db_input
 
+import sys
+
 # Configure application
 app = Flask(__name__)
 
@@ -37,16 +39,19 @@ def doctors():
     return render_template("doctors.html")
 
 
-@app.route("/hours")
-@login_required
-def hours():
-    return render_template("hours.html")
-
-
 @app.route("/access")
 @login_required
 def access():
     return render_template("access.html")
+
+
+@app.route("/hours")
+@login_required
+def hours():
+    shop_hours = db_input("SELECT * FROM hours")
+    ams = ["on" if i["am"] == "open" else "off" for i in shop_hours]
+    pms = ["on" if i["pm"] == "open" else "off" for i in shop_hours]
+    return render_template("hours.html", ams=ams, pms=pms)
 
 
 @app.route("/appointments", methods=["GET", "POST"])
@@ -69,11 +74,11 @@ def appointments():
     else:
         prompt = "SELECT date, time, pets.name AS pet, doctors.name AS doctor FROM bookings "\
                  "JOIN pets ON pets.id = pet_id JOIN doctors ON doctors.id=doctor_id "\
-                 "WHERE user_id = 5 ORDER BY date ASC, time ASC"
-        results = db_input(prompt)
+                 "WHERE user_id = ? ORDER BY date ASC, time ASC"
+        results = db_input(prompt, (session["user_id"],))
         now = datetime.today().replace(second=0, microsecond=0)
         upcoming = [item for item in results if now <= datetime(
-            now.year, *map(int, item["date"].split("/")), *map(int, item["time"].split(":")))]
+            *map(int, item["date"].split("/")), *map(int, item["time"].split(":")))]
         past = [item for item in results if item not in upcoming][::-1]
         u_appt = [(appt['date'], "at", appt['time'], "-", appt['pet'], "with", appt['doctor']) for appt in upcoming]
         p_appt = [(appt['date'], "at", appt['time'], "-", appt['pet'], "with", appt['doctor']) for appt in past]
@@ -91,13 +96,26 @@ def get_avail(n, doctor, times, dates):
     promptb = "SELECT COUNT(*) AS x FROM bookings JOIN doctors ON doctors.id"\
               "= doctor_id WHERE date=? AND time=? AND doctors.name=?"
 
+    # Get shop open hours
+    hours = {i["day"]: [i["am"] == "open"] * 6 + [i["pm"] == "open"] * 8 for i in db_input("SELECT * FROM hours")}
+    shop = [hours[(date.today() + timedelta(days=i)).strftime('%A')] for i in range(5)]
+    # Rotate the x and y for shop hours
+    shop = sum(list(map(list, zip(*shop))), [])
+    print(f"{shop=}", file=sys.stderr)
+    # Get num doctors assigned to each slot
     if n != 1:
         availability = [db_input(prompta, (d, t))[0]["x"] for t in times for d in dates]
     else:
         availability = [db_input(promptb, (d, t, doctor))[0]["x"] for t in times for d in dates]
 
+    print(f"before: {availability=}", file=sys.stderr)
+    # If shop is closed make slot 2n (full)
+    availability = [x if shop[i] else 2*n for i, x in enumerate(availability)]
+    print(f"after: {availability=}", file=sys.stderr)
+
     classes = [symbols[ceil(-x/n+2)]["class"] for x in availability]
     marks = [symbols[ceil(-x/n+2)]["shape"] for x in availability]
+    print(f"{marks=}", file=sys.stderr)
     return classes, marks
 
 
@@ -107,7 +125,8 @@ def repopulate():
     """ fills the form for the booking page """
     times = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '14:00',
              '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30']
-    dates = [(date.today() + timedelta(days=i)).strftime('%m/%d') for i in range(5)]
+    dates = [(date.today() + timedelta(days=i)).strftime('%Y/%m/%d') for i in range(5)]
+    display_dates = [(date.today() + timedelta(days=i)).strftime('%y/%m/%d') for i in range(5)]
     pet_list = db_input("SELECT * FROM pets WHERE owner_id = ?", (session["user_id"],))
     pets = [pet["name"] for pet in pet_list]
     doc_list = db_input("SELECT * FROM doctors")
@@ -121,12 +140,12 @@ def repopulate():
         else:
             classes, marks = get_avail(1, select, times, dates)
 
-        return render_template("book.html", times=times, dates=dates, pets=pets, doctors=doctors, classes=classes, marks=marks, select=select)
+        return render_template("book.html", times=times, dates=display_dates, pets=pets, doctors=doctors, classes=classes, marks=marks, select=select)
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         classes, marks = get_avail(len(doctors), None, times, dates)
-        return render_template("book.html", times=times, dates=dates, pets=pets, doctors=doctors, classes=classes, marks=marks, select="None")
+        return render_template("book.html", times=times, dates=display_dates, pets=pets, doctors=doctors, classes=classes, marks=marks, select="None")
 
 
 @app.route("/book", methods=["GET", "POST"])
@@ -197,13 +216,19 @@ def update():
         elif new != request.form.get("conf-x"):
             flash(f"New {content}s Do Not Match")
             return render_template("update.html", content=content, current=current)
-        # Ensure username has not been already taken
-        if not check_password_hash(current, generate_password_hash(old)):
-            flash(f"Old {content} Does Not Match")
-            return render_template("update.html", content=content, current=current)
-        # Encrypt password
+        # Check old password
         if content == "Password":
+            if not check_password_hash(current, old):
+                flash(f"Old {content} Does Not Match")
+                return render_template("update.html", content=content, current=current)
+            # Encrypt password
             new = generate_password_hash(new)
+        # Ensure new username has not been already taken
+        if content == "User Name":
+            uns = db_input("SELECT * FROM users WHERE user = ?", (new,))
+            if uns:
+                flash("Username Unavailable")
+                return render_template("update.html", content=content, current=current)
         db_input(f"UPDATE users SET {content.split()[0].lower()}=? WHERE id = ?", (new, session["user_id"]))
         # Redirect user to booking page with flash message
         flash(f"{content} Updated")
@@ -250,7 +275,9 @@ def settings():
         # Check for pet delete
         delete = request.form.get("delete")
         if delete:
-            db_input("DELETE FROM pets WHERE owner_id=? AND name=?", (session["user_id"], delete))
+            pet_id = db_input("SELECT id FROM pets WHERE owner_id=? AND name=?", (session["user_id"], delete))[0]["id"]
+            db_input("DELETE FROM pets WHERE owner_id=? AND id=?", (session["user_id"], pet_id))
+            db_input("DELETE FROM bookings WHERE user_id=? AND pet_id=?", (session["user_id"], pet_id))
             return redirect("/settings")
         # Check for other button click
         content = request.form.get("clicked")

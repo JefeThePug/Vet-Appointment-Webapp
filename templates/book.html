@@ -49,6 +49,14 @@
               </select>
             </div>
           </article>
+          <article class="section" style="grid-area: key;">
+              <table class="book-key">
+                <th>&nbsp;</th>
+                <th class="book-th"><button class="cir" style="pointer-events: none">◯</button><h4>Open</h4></th>
+                <th class="book-th"><button class="tri" style="pointer-events: none">△</button><h4>Limited</h4></th>
+                <th class="book-th"><button class="xxx" style="pointer-events: none">✕</button><h4>Closed</h4></th>
+              </table>
+          </article>
           <div class="outer" style="grid-area:bookings">
             <div class="inner">
               <table class="booking-table">
@@ -63,7 +71,7 @@
                   <td class="fixed boldhead book-td">{{times[time]}}</td>
                   {% for d in range(5) %}
                   <td class="book-td">
-                    <button type="submit" class="booking-btn {{classes[5*time + d]}}" name="book-slot" value="{{dates[d]}}-{{times[time]}}">{{marks[5*time + d]}}</button>
+                    <button type="submit" class="booking-btn {{classes[5*time + d]}}" name="book-slot" value="20{{dates[d]}}-{{times[time]}}">{{marks[5*time + d]}}</button>
                   </td>
                   {% endfor %}
                 </tr>
